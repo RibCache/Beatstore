@@ -4,6 +4,8 @@ from src.db.database import Base
 from src.models.user import User
 
 class Track(Base):
+    __tablename__ = "tracks"
+    
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     title: Mapped[str]
     bpm: Mapped[int]
