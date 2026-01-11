@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from src.services.crud import create_user
 from src.schemas.user import UserResponse, CreateUser
 from src.db.database import get_db
 from src.models.user import User
+from src.core.security import verify_password, create_access_token
 
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -16,3 +18,17 @@ def user_create_route(user: CreateUser, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     
     return create_user(db=db, user=user)
+
+@router.post("/login")
+def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == form_data.username).first()
+    
+    if not user or not verify_password(form_data.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+        )
+        
+    access_token = create_access_token(data={"sub": user.email})
+    
+    return {"access_token": access_token, "token_type": "bearer"}
+
