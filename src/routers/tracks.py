@@ -7,12 +7,14 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 router = APIRouter()
+
+@router.post("/tracks")
 def create_track_route(
     track_in: CreateTrack,
     db: Session = Depends(get_db)
 ):
     repo = TrackRepository(db)
     
-    return track.create_track_service(repo, track_in, user_id=1)
+    return track.track_create_service(repo, track_in, user_id=1)
     
 

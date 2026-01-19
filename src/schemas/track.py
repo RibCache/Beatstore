@@ -10,7 +10,7 @@ class TrackResponse(BaseModel):
     id: int
     owner_id: int
     title: str
-    bmp: int
+    bpm: int
     genre: str
     price: float
     

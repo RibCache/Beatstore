@@ -25,4 +25,4 @@ class TrackRepository:
         return self.db.query(Track).all()
     
     def get_track_by_id(self, track_id: int):
-        return self.track_id_check()
+        return self.track_id_check(track_id)
