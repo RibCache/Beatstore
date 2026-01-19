@@ -11,4 +11,5 @@ class User(Base):
     email: Mapped[str]
     hashed_password: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    is_producer: Mapped[bool] = mapped_column(default=False)
     
