@@ -26,3 +26,11 @@ class TrackRepository:
     
     def get_track_by_id(self, track_id: int):
         return self.track_id_check(track_id)
+    
+    def delete(self, track_id: int):
+        track = self.track_id_check(track_id)
+        if track:
+            self.db.delete(track)
+            self.db.commit()
+            return True 
+        return False

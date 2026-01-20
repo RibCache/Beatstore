@@ -13,4 +13,15 @@ def get_track_id_service(repo: TrackRepository, track_id: int):
         raise HTTPException(status_code=404)
     
     return track
+
+def delete_track_service(repo: TrackRepository, track_id: int, user_id: int):
+    track = repo.get_track_by_id(track_id)
     
+    if not track:
+        raise HTTPException(status_code=404)
+    
+    if track.owner_id != user_id:
+        raise HTTPException(
+            status_code=403
+        )
+    repo.delete(track_id)
